@@ -1,11 +1,11 @@
-﻿Shader "NiksShaders/Shader2Unlit"
+﻿Shader "DrewShaders/Shader2Unlit"
 {
     Properties
     {
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType" = "Opaque" }
         LOD 100
 
         Pass
@@ -16,9 +16,10 @@
 
             #include "UnityCG.cginc"
 
-            fixed4 frag (v2f_img i) : SV_Target
+            fixed4 frag( v2f_img i ) : SV_Target
             {
-                return fixed4(1,0,0,1);
+                fixed3 color = fixed3( ( sin( _Time.y ) + 1 ) / 2, 0,( cos( _Time.y ) + 1 ) / 2 );
+                return fixed4( color,1).rrra;
             }
             ENDCG
         }
