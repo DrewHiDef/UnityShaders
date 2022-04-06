@@ -1,4 +1,4 @@
-﻿Shader "NiksShaders/Shader4Unlit"
+﻿Shader "DrewShaders/Shader4Unlit"
 {
     Properties
     {
