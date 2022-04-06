@@ -1,11 +1,12 @@
-﻿Shader "NiksShaders/Shader9Unlit"
+﻿Shader "DrewShaders/Shader9Unlit"
 {
     Properties
     {
+        _Mouse( "Mouse", Vector ) = ( 0,0,0,0 )
     }
-    SubShader
+        SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType" = "Opaque" }
         LOD 100
 
         Pass
@@ -15,6 +16,8 @@
             #pragma fragment frag
 
             #include "UnityCG.cginc"
+
+            float4 _Mouse;
 
             float rect(float2 pt, float2 size, float2 center){
                 float2 p = pt - center;
@@ -26,9 +29,11 @@
                 return horz * vert;
             }
 
-            fixed4 frag (v2f_img i) : SV_Target
+            fixed4 frag( v2f_img i ) : SV_Target
             {
-                fixed4 color = 1;
+                float2 pos = i.uv;
+                float square = rect( pos, float2( 0.15, 0.15 ), _Mouse.xy );
+                fixed4 color = fixed4(fixed3(1,1,0) * square, 1);
                 return color;
             }
             ENDCG
