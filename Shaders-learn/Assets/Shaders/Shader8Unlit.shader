@@ -1,4 +1,4 @@
-﻿Shader "NiksShaders/Shader8Unlit"
+﻿Shader "DrewShaders/Shader8Unlit"
 {
     Properties
     {
@@ -12,7 +12,7 @@
         {
             CGPROGRAM
 // Upgrade NOTE: excluded shader from DX11; has structs without semantics (struct v2f members position)
-#pragma exclude_renderers d3d11
+//#pragma exclude_renderers d3d11
             #pragma vertex vert
             #pragma fragment frag
 
@@ -34,10 +34,26 @@
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            float rect( float2 pt, float2 size, float2 center )
             {
-                float inCircle = 1 - step(0.25, length( i.position.xy ));
-                fixed3 color = fixed3(1,1,0) * inCircle;
+                float2 halfsize = size * 0.5;
+                float2 min = center - halfsize;
+                float2 max = center + halfsize;
+                float inrect = step( min.x, pt.x );
+                inrect = inrect * step( pt.x, max.x );
+                inrect = inrect * step( min.y, pt.y );
+                inrect = inrect * step( pt.y, max.y );
+                return inrect;
+            }
+
+            fixed4 frag( v2f i ) : SV_Target
+            {
+                float2 pos = i.position.xy;
+                float2 size = float2(0.75,0.25);
+                float2 center = float2(0.125,-0.375);
+                float inRect = rect( pos, size, center );
+
+                fixed3 color = fixed3(1,1,0) * inRect;
                 return fixed4(color, 1.0);
             }
             ENDCG
