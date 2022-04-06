@@ -21,9 +21,10 @@
             fixed4 _ColorA;
             fixed4 _ColorB;
 
-            fixed4 frag (v2f_img i) : SV_Target
+            fixed4 frag( v2f_img i ) : SV_Target
             {
-                fixed3 color = 1;
+                float delta = i.uv.x;
+                fixed3 color = lerp( _ColorA, _ColorB, delta );
                 return fixed4(color, 1.0);
             }
             ENDCG
