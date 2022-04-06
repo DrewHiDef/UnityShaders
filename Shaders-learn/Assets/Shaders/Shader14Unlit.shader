@@ -1,4 +1,4 @@
-﻿Shader "NiksShaders/Shader14Unlit"
+﻿Shader "DrewShaders/Shader14Unlit"
 {
     Properties
     {
@@ -14,7 +14,7 @@
         {
             CGPROGRAM
 // Upgrade NOTE: excluded shader from DX11; has structs without semantics (struct v2f members position)
-#pragma exclude_renderers d3d11
+//#pragma exclude_renderers d3d11
             #pragma vertex vert
             #pragma fragment frag
 
@@ -38,11 +38,30 @@
            
             fixed4 _Color;
             float _Radius;
+
+            float circle( float2 pt, float2 center, float radius )
+            {
+                float2 p = pt - center;
+                float smoothedge = 0.05;
+                return 1.0 - smoothstep( radius - smoothedge, radius + smoothedge, length( p ) );
+            }
+
+            float outlinecircle( float2 pt, float2 center, float radius, float linewidth )
+            {
+                float2 p = pt - center;
+                float len = length( p );
+                float halfwidth = linewidth * 0.5;
+                //return step(radius - halfwidth, len) - step(radius + halfwidth, len);
+
+                float smoothedge = halfwidth;
+                return smoothstep( radius - halfwidth - smoothedge, radius - halfwidth, len )
+                     - smoothstep( radius + halfwidth, radius + halfwidth + smoothedge, len );
+            }
             
             fixed4 frag (v2f i) : SV_Target
             {
                 float2 pos = i.position * 2;
-                fixed3 color = _Color;
+                fixed3 color = _Color * outlinecircle(pos, float2(0, 0), _Radius, 0.05);
                 
                 return fixed4(color, 1.0);
             }
