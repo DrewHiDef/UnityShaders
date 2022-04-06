@@ -12,7 +12,7 @@
         {
             CGPROGRAM
 // Upgrade NOTE: excluded shader from DX11; has structs without semantics (struct v2f members position)
-#pragma exclude_renderers d3d11
+//#pragma exclude_renderers d3d11
             #pragma vertex vert
             #pragma fragment frag
 
@@ -36,8 +36,13 @@
 
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed3 color = saturate(i.position * 2);
-                return fixed4(color, 1.0);
+                fixed3 color = i.position * 2;
+                //color.r = smoothstep( -0.1, 0.1, color.r );
+                //color.g = smoothstep( -0.1, 0.1, color.g );
+                color.r = step( length( i.position.xy ), 0.5 );
+                color.g = step( length( i.position.xy ), 0.5 );
+                //color.b = step( 0, color.b );
+                return fixed4(color, 1.0 );
             }
             ENDCG
         }
