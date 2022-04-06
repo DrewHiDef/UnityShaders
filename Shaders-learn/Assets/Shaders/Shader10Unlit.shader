@@ -1,4 +1,4 @@
-﻿Shader "NiksShaders/Shader10Unlit"
+﻿Shader "DrewShaders/Shader10Unlit"
 {
     Properties
     {
@@ -15,7 +15,7 @@
         {
             CGPROGRAM
 // Upgrade NOTE: excluded shader from DX11; has structs without semantics (struct v2f members position)
-#pragma exclude_renderers d3d11
+//#pragma exclude_renderers d3d11
             #pragma vertex vert
             #pragma fragment frag
 
@@ -51,7 +51,7 @@
 
             fixed4 frag (v2f i) : SV_Target
             {
-                float2 center = 0;
+                float2 center = float2( _SinTime.w,_CosTime.w ) * _Radius;
                 float2 pos = i.position.xy * 2.0;
                 float2 size = _Size;
                 float3 color = _Color * rect(pos, size, center);
