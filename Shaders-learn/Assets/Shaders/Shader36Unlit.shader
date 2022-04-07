@@ -1,4 +1,4 @@
-﻿Shader "NiksShaders/Shader36Unlit"
+﻿Shader "DrewShaders/Shader36Unlit"
 {
     Properties
     {
