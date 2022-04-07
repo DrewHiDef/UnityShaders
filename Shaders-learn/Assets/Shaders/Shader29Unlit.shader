@@ -2,10 +2,12 @@
 {
     Properties
     {
+        _ColorA( "Color A", Color ) = ( 1,0,0,1 )
+        _ColorB( "Color B", Color ) = ( 1,1,0,1 )
     }
-    SubShader
+        SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType" = "Opaque" }
         LOD 100
 
         Pass
@@ -14,8 +16,11 @@
 
             #pragma vertex vert_img
             #pragma fragment frag
-          
+
             #include "UnityCG.cginc"
+
+            float4 _ColorA;
+            float4 _ColorB;
 
             float random (float2 pt) {
                 const float a = 12.9898;
@@ -52,11 +57,12 @@
             {
                 // Scale the coordinate system to see some noise in action
                 float2 pos = i.uv * 12.0;
+                pos.y -= _Time.y;
 
                 // Use the noise function
                 float n = noise(pos); 
-                n = smoothstep(0.4, 0.6, n);
-                fixed3 color = n * fixed3(1,1,1);
+                //n = smoothstep(0.4, 0.6, n);
+                fixed3 color = lerp( _ColorA.rgb, _ColorB.rgb, n );
                 
                 return fixed4(color, 1.0);
             }
