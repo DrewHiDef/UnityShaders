@@ -51,11 +51,11 @@
             fixed4 frag (v2f_img i) : SV_Target
             {
                 // Scale the coordinate system to see some noise in action
-                float2 pos = i.uv * 8.0;
+                float2 pos = i.uv * 12.0;
 
                 // Use the noise function
                 float n = noise(pos); 
-                //n = smoothstep(0.4, 0.6, n);
+                n = smoothstep(0.4, 0.6, n);
                 fixed3 color = n * fixed3(1,1,1);
                 
                 return fixed4(color, 1.0);
