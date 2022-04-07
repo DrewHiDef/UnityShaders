@@ -22,6 +22,7 @@
             #pragma fragment frag
 
             #include "UnityCG.cginc"
+            #include "noiseSimplex.cginc"
             
             struct v2f
             {
@@ -47,7 +48,10 @@
             float4 frag (v2f i) : COLOR
             {
                 float3 pos = i.position.xyz * 2;
-                float delta = 1;
+                float n = snoise( pos );
+                float ring = frac( (_Frequency * pos.z) + (_NoiseScale * n ));
+                ring *= _Contrast * ( 1.0 - ring );
+                float delta = pow(ring, _RingScale) + n;
                 fixed3 color = lerp(_DarkColor, _PaleColor, delta);
 
                 return fixed4( color, 1.0 );
