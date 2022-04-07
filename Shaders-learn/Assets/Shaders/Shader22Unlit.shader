@@ -1,4 +1,4 @@
-﻿Shader "NiksShaders/Shader22Unlit"
+﻿Shader "DrewShaders/Shader22Unlit"
 {
     Properties
     {
@@ -14,7 +14,7 @@
         {
             CGPROGRAM
 // Upgrade NOTE: excluded shader from DX11; has structs without semantics (struct v2f members position)
-#pragma exclude_renderers d3d11
+//#pragma exclude_renderers d3d11
             #pragma vertex vert
             #pragma fragment frag
             
@@ -72,6 +72,7 @@
                 return smoothstep(x-line_width/2.0-edge_width, x-line_width/2.0, y) - smoothstep(x+line_width/2.0, x+line_width/2.0+edge_width, y);
             }
 
+            // codepen.io/nik-lever/full/ZPKmmx for explanation
             float polygon(float2 pt, float2 center, float radius, int sides, float rotate, float edge_thickness){
                 pt -= center;
 
