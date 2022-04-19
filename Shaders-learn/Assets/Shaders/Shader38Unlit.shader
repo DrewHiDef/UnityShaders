@@ -3,6 +3,7 @@
     Properties
     {
         _MainTex("Main Texture", 2D) = "white" {}
+        _Duration("Duration", Float) = 6.0
     }
     SubShader
     {
@@ -35,6 +36,7 @@
             }
           
             sampler2D _MainTex;
+            float _Duration;
 
             float2 rotate( float2 pt, float theta, float aspect )
             {
@@ -49,11 +51,19 @@
 
             float4 frag( v2f i ) : COLOR
             {
-                float2 uv = rotate( i.uv - 0.5, _Time.y, 2.0 / 1.5 ) + 0.5;
-                if ( uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0 )
-                {
-                    return float4( 0,0,0,0 );
-                }
+                //float2 uv = rotate( i.uv - 0.5, _Time.y, 2.0 / 1.5 ) + 0.5;
+                //if ( uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0 )
+                //{
+                //    return float4( 0,0,0,0 );
+                //}
+                //fixed3 color = tex2D( _MainTex, uv ).rgb;
+
+                float2 pos = i.position.xy * 2.0;
+                float len = length( pos );
+                float2 ripple = i.uv + pos / len * 0.03 * cos( len * 12.0 - _Time.y * 4.0 );
+                float theta = fmod( _Time.y, _Duration ) * ( UNITY_TWO_PI / _Duration );
+                float delta = ( sin( theta ) + 1.0 ) / 2.0;
+                float2 uv = lerp( ripple, i.uv, delta );
                 fixed3 color = tex2D( _MainTex, uv ).rgb;
                 return fixed4( color, 1.0 );
             }
