@@ -52,7 +52,7 @@
                 float2 uv = lerp(ripple, i.uv, delta);
                 fixed3 col1 = tex2D(_TextureA, uv).rgb;
                 fixed3 col2 = tex2D(_TextureB, uv).rgb;
-                float fade = smoothstep(delta*1.4, delta*2.5, len);
+                float fade = smoothstep( delta * 1.4, delta * 2.5, len);
                 fixed3 color = lerp(col2, col1, fade);
                 
                 return fixed4( color, 1.0 );
