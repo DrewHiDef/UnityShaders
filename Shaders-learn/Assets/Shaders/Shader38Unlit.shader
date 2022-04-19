@@ -36,10 +36,25 @@
           
             sampler2D _MainTex;
 
-            float4 frag (v2f i) : COLOR
+            float2 rotate( float2 pt, float theta, float aspect )
             {
-                fixed3 color = length(i.uv);
+                float s = sin( theta );
+                float c = cos( theta );
+                float2x2 mat = float2x2( c, s, -s, c );
+                pt.y /= aspect;
+                pt = mul( pt, mat );
+                pt.y *= aspect;
+                return pt;
+            }
 
+            float4 frag( v2f i ) : COLOR
+            {
+                float2 uv = rotate( i.uv - 0.5, _Time.y, 2.0 / 1.5 ) + 0.5;
+                if ( uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0 )
+                {
+                    return float4( 0,0,0,0 );
+                }
+                fixed3 color = tex2D( _MainTex, uv ).rgb;
                 return fixed4( color, 1.0 );
             }
             ENDCG
